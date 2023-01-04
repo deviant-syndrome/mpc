@@ -147,10 +147,10 @@ void EventHandler::handleNoThru(const std::shared_ptr<Event>& event, Track* trac
 
                             if (ne->getDuration() > 0)
                             {
-                                frameSeq->enqueueEventAfterNFrames([this, pad]() {
+                                frameSeq->enqueueEventAfterNFrames([this, pad, ne, track]() {
                                     mpc.getHardware()->getPad(pad)->notifyObservers(255);
-
-                                }, durationFrames);
+                                    midiOut(ne->getNoteOff(), track);
+                                }, static_cast<unsigned long>(durationFrames));
                             }
                         }
                     }
